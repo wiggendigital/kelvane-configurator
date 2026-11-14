@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Build your Kelvane 01 | 3D bottle configurator</title>
+  <meta name="description" content="Choose the size, colour, lid and boot of a Kelvane 01 bottle, add an engraving, and see it in 3D with the price as you go.">
+  <meta name="theme-color" content="#edebe6">
+  <link rel="canonical" href="https://wiggendigital.github.io/kelvane-configurator/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kelvane">
+  <meta property="og:title" content="Build your Kelvane 01">
+  <meta property="og:description" content="Choose the size, colour, lid and boot, add an engraving, and see your bottle in 3D.">
+  <meta property="og:image" content="https://wiggendigital.github.io/kelvane-configurator/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A Kelvane bottle in moss green beside the list of options and the price.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315171a'/%3E%3Cpath d='M12.5 6.5h7v3.4h-7z' fill='%23a9bcc6'/%3E%3Cpath d='M12.3 11h7.4c0 2.2 1.8 2.2 1.8 4.6V23h-11v-7.4c0-2.4 1.8-2.4 1.8-4.6z' fill='%23a9bcc6'/%3E%3Cpath d='M10.3 23h11.4v1.6a1.6 1.6 0 0 1-1.6 1.6h-8.2a1.6 1.6 0 0 1-1.6-1.6z' fill='%23f1efe9'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="modulepreload" href="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.170.0/three.module.min.js" crossorigin="anonymous">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+
+  <!-- The bottle as flat artwork, drawn from the same profile as the 3D model. It is shown
+       while the model loads and takes its place where WebGL is unavailable. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="g-body" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity=".34"/>
+        <stop offset=".07" stop-color="#000" stop-opacity=".08"/>
+        <stop offset=".2" stop-color="#fff" stop-opacity=".24"/>
+        <stop offset=".36" stop-color="#fff" stop-opacity=".06"/>
+        <stop offset=".62" stop-color="#000" stop-opacity=".1"/>
+        <stop offset=".88" stop-color="#000" stop-opacity=".3"/>
+        <stop offset=".965" stop-color="#000" stop-opacity=".22"/>
+        <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
+      </linearGradient>
+      <linearGradient id="g-steel" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#4c5157"/>
+        <stop offset=".18" stop-color="#f4f6f7"/>
+        <stop offset=".4" stop-color="#9aa0a6"/>
+        <stop offset=".78" stop-color="#5c6167"/>
+        <stop offset="1" stop-color="#d7dbdf"/>
+      </linearGradient>
+      <path id="b-lid" d="M92.6 56.5 L93.2 55.8 L93.2 33.0 L93.1 32.4 L93.0 31.9 L92.7 31.3 L92.3 30.9 L91.9 30.5 L91.3 30.2 L90.8 30.1 L90.2 30.0 L76.0 29.4 L60.0 29.0 L44.0 29.4 L29.8 30.0 L29.2 30.1 L28.7 30.2 L28.1 30.5 L27.7 30.9 L27.3 31.3 L27.0 31.9 L26.9 32.4 L26.8 33.0 L26.8 55.8 L27.4 56.5Z"/>
+      <path id="b-shell" d="M98.5 282.0 L99.4 281.9 L100.2 281.5 L101.0 281.0 L101.5 280.2 L101.9 279.4 L102.0 278.5 L102.0 100.0 L101.9 96.9 L101.6 94.1 L101.2 91.7 L100.7 89.5 L100.0 87.6 L99.3 85.9 L98.5 84.3 L97.7 82.9 L96.8 81.6 L95.9 80.3 L95.1 79.0 L94.3 77.6 L93.6 76.2 L92.9 74.7 L92.4 73.0 L92.0 71.1 L91.7 68.9 L91.6 66.5 L91.6 65.0 L28.4 65.0 L28.4 66.5 L28.3 68.9 L28.0 71.1 L27.6 73.0 L27.1 74.7 L26.4 76.2 L25.7 77.6 L24.9 79.0 L24.1 80.3 L23.2 81.6 L22.3 82.9 L21.5 84.3 L20.7 85.9 L20.0 87.6 L19.3 89.5 L18.8 91.7 L18.4 94.1 L18.1 96.9 L18.0 100.0 L18.0 278.5 L18.1 279.4 L18.5 280.2 L19.0 281.0 L19.8 281.5 L20.6 281.9 L21.5 282.0Z"/>
+      <path id="b-boot" d="M99.7 290.0 L100.7 289.9 L101.7 289.5 L102.5 288.8 L103.2 288.0 L103.6 287.0 L103.7 286.0 L103.7 257.5 L103.6 257.0 L103.2 256.6 L102.7 256.5 L17.3 256.5 L16.8 256.6 L16.4 257.0 L16.3 257.5 L16.3 286.0 L16.4 287.0 L16.8 288.0 L17.5 288.8 L18.3 289.5 L19.3 289.9 L20.3 290.0Z"/>
+      <symbol id="mark" viewBox="0 0 24 24">
+        <path d="M9.2 2.6h5.6v2.8H9.2z" fill="currentColor"/>
+        <path d="M9 7h6c0 2.2 1.7 2.1 1.7 4.6v6.6a2.6 2.6 0 0 1-2.6 2.6H9.9a2.6 2.6 0 0 1-2.6-2.6v-6.6C7.3 9.1 9 9.2 9 7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#options">Skip to the options</a>
+
+  <div class="layout">
+
+    <section class="viewer" id="viewer" aria-label="Your bottle">
+      <div class="viewer__stage" id="stage" tabindex="0" role="img" aria-label="Kelvane 01 bottle">
+        <figure class="poster" id="poster" aria-hidden="true">
+          <svg viewBox="0 13.3 120 276.7">
+            <path id="p-loop" d="M45 30.2A15 15 0 0 1 75 30.2" fill="none" stroke="url(#g-steel)" stroke-width="3.8"/>
+            <use href="#b-lid" style="fill:var(--lid)"/>
+            <use href="#b-lid" fill="url(#g-body)"/>
+            <path d="M92.9 59.4 L93.4 58.8 L93.4 57.0 L92.9 56.4 L27.1 56.4 L26.6 57.0 L26.6 58.8 L27.1 59.4Z" fill="url(#g-steel)"/>
+            <path d="M91.8 65.0 L91.8 61.2 L91.7 60.8 L91.5 60.5 L91.0 60.4 L28.9 60.4 L28.6 60.5 L28.3 60.8 L28.1 61.2 L28.1 65.0Z" fill="url(#g-steel)"/>
+            <use href="#b-shell" style="fill:var(--finish)"/>
+            <use href="#b-shell" fill="url(#g-body)"/>
+            <text x="53.5" y="194" text-anchor="middle" font-family="Geist, system-ui, sans-serif" font-size="5.6" font-weight="600" letter-spacing="2.7" style="fill:var(--print)">KELVANE</text>
+            <g id="p-boot">
+              <use href="#b-boot" style="fill:var(--boot)"/>
+              <use href="#b-boot" fill="url(#g-body)" opacity=".5"/>
+            </g>
+          </svg>
+        </figure>
+        <canvas class="viewer__canvas" id="canvas" aria-hidden="true"></canvas>
+      </div>
+
+      <a class="brand" href="https://wiggendigital.github.io/kelvane/" aria-label="Kelvane, about the bottle">
+        <svg aria-hidden="true"><use href="#mark"/></svg>
+        <span>Kelvane</span>
+      </a>
+
+      <p class="viewer__hint" id="hint" aria-hidden="true">Drag to turn the bottle</p>
+
+      <div class="views" id="views" role="group" aria-label="View">
+        <button type="button" data-view="full" aria-pressed="true">Whole bottle</button>
+        <button type="button" data-view="lid" aria-pressed="false">Lid</button>
+        <button type="button" data-view="base" aria-pressed="false">Base</button>
+      </div>
+    </section>
+
+    <main class="panel" id="options">
+      <form id="config" novalidate>
+        <header class="panel__head">
+          <h1>Build your Kelvane 01</h1>
+          <p>A steel vacuum bottle with a ceramic lining. Choose how yours is made, and the price follows.</p>
+        </header>
+
+        <fieldset class="group">
+          <legend>Size</legend>
+          <div class="cards cards--two">
+            <label class="card">
+              <input type="radio" name="size" value="600" checked>
+              <span class="card__body">
+                <span class="card__title">600 ml</span>
+                <span class="card__text">252 mm tall. Fits a car cup holder.</span>
+                <span class="card__price">$58</span>
+              </span>
+            </label>
+            <label class="card">
+              <input type="radio" name="size" value="900">
+              <span class="card__body">
+                <span class="card__title">900 ml</span>
+                <span class="card__text">327 mm tall. Enough water for a day out.</span>
+                <span class="card__price">$68</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Colour</legend><span class="group__now" id="now-colour">Glacier</span>
+          <div class="swatches">
+            <label class="swatch" style="--c:#a9bcc6"><input type="radio" name="colour" value="glacier" checked><span class="swatch__dot"></span><span class="sr-only">Glacier</span></label>
+            <label class="swatch" style="--c:#c2552d"><input type="radio" name="colour" value="ember"><span class="swatch__dot"></span><span class="sr-only">Ember</span></label>
+            <label class="swatch" style="--c:#56653f"><input type="radio" name="colour" value="moss"><span class="swatch__dot"></span><span class="sr-only">Moss</span></label>
+            <label class="swatch" style="--c:#d6c5a5"><input type="radio" name="colour" value="dune"><span class="swatch__dot"></span><span class="sr-only">Dune</span></label>
+            <label class="swatch" style="--c:#34373d"><input type="radio" name="colour" value="basalt"><span class="swatch__dot"></span><span class="sr-only">Basalt</span></label>
+            <label class="swatch swatch--steel"><input type="radio" name="colour" value="steel"><span class="swatch__dot"></span><span class="sr-only">Bare steel</span></label>
+          </div>
+          <p class="group__note" id="colour-text">A pale blue-grey powder coat, close to the colour of glacial meltwater.</p>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Lid</legend>
+          <div class="cards cards--two">
+            <label class="card">
+              <input type="radio" name="lid" value="loop" checked>
+              <span class="card__body">
+                <span class="card__title">Carry loop</span>
+                <span class="card__text">A steel loop wide enough for two fingers or a carabiner.</span>
+                <span class="card__price">Included</span>
+              </span>
+            </label>
+            <label class="card">
+              <input type="radio" name="lid" value="flat">
+              <span class="card__body">
+                <span class="card__title">Flat cap</span>
+                <span class="card__text">Lower, with nothing to catch in a bag pocket.</span>
+                <span class="card__price">Included</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="sub" id="lidfinish-group">
+            <p class="sub__label" id="lidfinish-label">Lid finish</p>
+            <div class="pills" role="radiogroup" aria-labelledby="lidfinish-label">
+              <label class="pill"><input type="radio" name="lidfinish" value="match" checked><span>Same colour as the body</span></label>
+              <label class="pill"><input type="radio" name="lidfinish" value="steel"><span>Brushed steel <b>+$4</b></span></label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Silicone boot</legend><span class="group__now" id="now-boot">Black</span>
+          <div class="swatches">
+            <label class="swatch" style="--c:#17181c"><input type="radio" name="boot" value="black" checked><span class="swatch__dot"></span><span class="sr-only">Black</span></label>
+            <label class="swatch" style="--c:#b9b4a8"><input type="radio" name="boot" value="stone"><span class="swatch__dot"></span><span class="sr-only">Stone</span></label>
+            <label class="swatch" style="--c:#94614a"><input type="radio" name="boot" value="clay"><span class="swatch__dot"></span><span class="sr-only">Clay</span></label>
+            <label class="swatch swatch--none"><input type="radio" name="boot" value="none"><span class="swatch__dot"></span><span class="sr-only">No boot</span></label>
+          </div>
+          <p class="group__note" id="boot-text">The boot stops the bottle ringing on a desk and sliding on a wet counter.</p>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Engraving</legend><span class="group__now" id="now-text">None</span>
+          <label class="sr-only" for="text">Text to engrave</label>
+          <input class="text" id="text" name="text" type="text" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="A name or a few words" aria-describedby="text-note">
+          <p class="group__note" id="text-note">Up to 16 letters, numbers and spaces, engraved under the wordmark. Adds $9 and three working days.</p>
+        </fieldset>
+
+        <section class="summary" aria-labelledby="summary-title">
+          <h2 id="summary-title">Your bottle</h2>
+          <dl class="lines" id="lines"></dl>
+          <p class="summary__ship" id="ship"></p>
+        </section>
+
+        <div class="buy">
+          <p class="buy__total"><span>Total</span><output id="total" for="config" aria-live="polite">$58</output></p>
+          <button class="btn" type="submit">Add to cart</button>
+        </div>
+        <button class="copy" type="button" id="copy">Copy a link to this bottle</button>
+
+        <p class="sample">Sample project. Kelvane is a fictional product, and this configurator was designed and built by Wiggen Digital with three.js.</p>
+      </form>
+    </main>
+  </div>
+
+  <dialog class="cart" id="cart" aria-labelledby="cart-title">
+    <h2 id="cart-title">Added to your cart</h2>
+    <dl class="lines" id="cart-lines"></dl>
+    <p class="cart__total"><span>Total</span><span id="cart-total"></span></p>
+    <p class="cart__note">This is a sample page, so nothing was ordered.</p>
+    <form method="dialog"><button class="btn btn--wide" type="submit">Keep building</button></form>
+  </dialog>
+</body>
+</html>
